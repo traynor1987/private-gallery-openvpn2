@@ -1,0 +1,12 @@
+Private Gallery OpenVPN2-only engine source notice
+
+This repository is derived from schwabe/ics-openvpn v0.7.65
+(commit ee574f6ff65703e09c1a1f6c2d9243d7940f3f8d).
+
+It is distributed as GPL-2.0-only. The upstream copyright and licence
+notices remain intact. The additional upstream OpenSSL and Apache-2.0
+linking exceptions/clarifications in doc/LICENSE.txt and the corresponding
+OpenVPN2 notices are retained and apply as written.
+
+OpenVPN3 and its AGPL/MPL source are intentionally excluded from this
+repository and from all build targets.

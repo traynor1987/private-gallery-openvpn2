@@ -1,0 +1,14 @@
+name: OpenVPN2-only audit
+on:
+  push:
+    branches: [openvpn2-gpl2-only]
+  pull_request:
+    branches: [openvpn2-gpl2-only]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - run: ./scripts/verify_openvpn2_only.sh
