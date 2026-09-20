@@ -13,7 +13,7 @@ This branch deliberately contains the **OpenVPN2** engine boundary used by Priva
 
 ## Explicit exclusion
 
-The upstream OpenVPN3 submodule at `c4f61851e119dbe4cd57521a7ff4b0e5805fa65e` and all associated AGPL-3.0-or-later/MPL-2.0 source, SWIG bindings, Gradle flavours and CMake targets are removed from this branch. They must not be restored.
+The upstream OpenVPN3 submodule at `c4f61851e119dbe4cd57521a7ff4b0e5805fa65e` and all associated AGPL-3.0-or-later/MPL-2.0 source, SWIG bindings, Gradle flavours and CMake targets are removed from this branch. Its unused mbedTLS, ASIO and fmt support submodules are removed too. They must not be restored. LZ4 remains because OpenVPN2's configured compression source and native target use it.
 
 ## Reproduce and audit
 

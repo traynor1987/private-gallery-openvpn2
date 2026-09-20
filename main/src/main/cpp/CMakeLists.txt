@@ -9,14 +9,6 @@ message("OpenVPN 2.x version ${OPENVPN2_GIT}")
 # Make builds (like F-droid) happy that want reproducible builds
 add_link_options("LINKER:--build-id=none")
 
-# Set mbedtls options
-OPTION(ENABLE_PROGRAMS "" OFF)
-OPTION(USE_SHARED_MBEDTLS_LIBRARY "" OFF)
-OPTION(ENABLE_TESTING "" OFF)
-
-# Own options
-OPTION(OPENVPN2MBED "Use mbed TLS for OpenVPN2" OFF)
-
 # STATIC or SHARED
 SET(SSLLIBTYPE STATIC)
 SET(OPENSSL_PATH "openssl")
@@ -29,10 +21,6 @@ include(tools.cmake)
 include(lzo.cmake)
 include(lz4.cmake)
 include(openssl/openssl.cmake)
-add_subdirectory(fmt)
-
-    add_subdirectory(mbedtls)
-endif()
 
     # Super hacky way to determine flavour
 #-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/arne/software/icsopenvpn/main/build/intermediates/cmake/normal/debug/obj/arm64-v8a
@@ -70,7 +58,6 @@ set(openvpn_srcs
         src/openvpn/crypto.c
         src/openvpn/crypto_epoch.c
         src/openvpn/crypto_openssl.c
-        src/openvpn/crypto_mbedtls.c
         src/openvpn/cryptoapi.c
         src/openvpn/dhcp.c
         src/openvpn/dns.c
@@ -136,14 +123,12 @@ set(openvpn_srcs
         src/openvpn/socks.c
         src/openvpn/ssl.c
         src/openvpn/ssl_openssl.c
-        src/openvpn/ssl_mbedtls.c
         src/openvpn/ssl_ncp.c
         src/openvpn/ssl_pkt.c
         src/openvpn/ssl_pkt.h
         src/openvpn/ssl_util.c
         src/openvpn/ssl_verify.c
         src/openvpn/ssl_verify_openssl.c
-        src/openvpn/ssl_verify_mbedtls.c
         src/openvpn/status.c
         src/openvpn/tls_crypt.c
         src/openvpn/tun.c
@@ -164,7 +149,6 @@ target_include_directories(openvpn PRIVATE
         openvpn-config
         openvpn/src/compat
         openvpn/include
-        mbedtls/include
         lzo/include
         openvpn
         )
@@ -177,17 +161,8 @@ target_compile_definitions(openvpn PRIVATE
         -DDEFAULT_DNS_UPDOWN=\"/not/supported/on/android\"
         )
 
-if (${OPENVPN2MBED})
-    target_compile_definitions(openvpn PRIVATE
-            -DENABLE_CRYPTO_MBEDTLS=1
-            )
-    target_link_libraries(openvpn mbedtls mbedx509 mbedcrypto lzo lz4)
-else ()
-    target_compile_definitions(openvpn PRIVATE
-            -DENABLE_CRYPTO_OPENSSL=1
-            )
-    target_link_libraries(openvpn crypto ssl lzo lz4)
-endif ()
+target_compile_definitions(openvpn PRIVATE -DENABLE_CRYPTO_OPENSSL=1)
+target_link_libraries(openvpn crypto ssl lzo lz4)
 
 add_executable(libovpnexec.so minivpn/minivpn.c)
 target_compile_options(libovpnexec.so PRIVATE -fPIE)
@@ -213,4 +188,3 @@ add_custom_command(TARGET pie_openvpn.${ANDROID_ABI} POST_BUILD
 # Hack that these targets are really executed
 add_dependencies(ovpnutil pie_openvpn.${ANDROID_ABI})
 add_dependencies(pie_openvpn.${ANDROID_ABI} makeassetdir)
-

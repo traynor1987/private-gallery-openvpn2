@@ -12,8 +12,14 @@ test "$(git rev-parse HEAD:main/src/main/cpp/lzo)" = "4bac163027dc61c7ee15679e53
 if git ls-tree -r --name-only HEAD | grep -Eqi '(^|/)(openvpn3|ovpn3)(/|$)'; then
   fail "OpenVPN3 path present"
 fi
+if git ls-tree -r --name-only HEAD | grep -Eqi '(^|/)(mbedtls|asio|fmt)(/|$)'; then
+  fail "OpenVPN3-only support path present"
+fi
 if grep -Eqi 'openvpn3|ovpn3|agpl' .gitmodules main/build.gradle.kts main/src/main/cpp/CMakeLists.txt; then
   fail "OpenVPN3 or AGPL active-build reference present"
+fi
+if grep -Eqi 'mbedtls|asio|fmt' .gitmodules main/build.gradle.kts main/src/main/cpp/CMakeLists.txt; then
+  fail "OpenVPN3-only support reference present"
 fi
 test -f doc/LICENSE.txt || fail "upstream licence clarification missing"
 test -f main/src/main/cpp/lzo/COPYING || fail "LZO notice missing"

@@ -4,15 +4,6 @@
 [submodule "main/openssl"]
 	path = main/src/main/cpp/openssl
 	url = ../../schwabe/platform_external_openssl.git
-[submodule "main/src/main/cpp/mbedtls"]
-	path = main/src/main/cpp/mbedtls
-	url = ../../ARMmbed/mbedtls.git
-[submodule "main/src/main/cpp/asio"]
-	path = main/src/main/cpp/asio
-	url = ../../chriskohlhoff/asio/
 [submodule "main/src/main/cpp/lz4"]
 	path = main/src/main/cpp/lz4
 	url = ../../lz4/lz4.git
-[submodule "main/src/main/cpp/fmt"]
-	path = main/src/main/cpp/fmt
-	url = https://github.com/fmtlib/fmt
